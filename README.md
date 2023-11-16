@@ -24,6 +24,14 @@ repository includes 3 auto-encoder projects:
       (train_X, train_y), (test_X, test_y) = mnist.load_data()
 + images are flattened because the model is 1D
 #### simple model
++ A single-layer encoder with n=300 neurons is designed
++ 28⨉28 images are compressed(encoded) to k*8 bytes(k=4 and encoder output is float64(8 bytes) ) 
++ A single-layer decoder with m=300 neurons is designed
++ 28⨉28 images are reconstructed(decoded) from k*8 bytes
++ model parameters n, m, and k can be modified to observe changes
++ adadelta optimizer with learning_rate=1, and rho=.8 is used to train model
+##### plot
++ a number of images are selected to compare with reconstructed ones
 ***
 # img_auto_encoder 1D
 ***
