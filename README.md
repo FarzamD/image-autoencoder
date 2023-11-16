@@ -16,14 +16,14 @@ repository includes 3 auto-encoder projects:
       ```python
       from keras.datasets import mnist
       (train_X, train_y), (test_X, test_y) = mnist.load_data()
-### code blocks
-#### load mnist
+## code blocks
+### load mnist
 + load mnist dataset
     + dataset consists of images and labels of handwritten digits  
         + images are 28⨉28 pixels
         + trainset has 60,000 samples and testset 10,000 samples
 + images are flattened because the model is 1D
-#### simple model
+### simple model
 + A single-layer encoder with n=300 neurons is designed
 + 28⨉28 images are compressed(encoded) to k*8 bytes(k=4 and encoder output is float64(8 bytes) ) 
 + A single-layer decoder with m=300 neurons is designed
@@ -33,6 +33,16 @@ repository includes 3 auto-encoder projects:
 + adadelta optimizer with learning_rate=1, and rho=.8 is used to train model
 ##### plot
 + a number of images are selected to compare with reconstructed ones
+### divide image model
++ images are divided into smaller images of size 28/d⨉28/d (d=2)
++ The model then auto-encodes smaller images
++ the model structure is same as before
++ model parameters are set as bellow
+    + n=m=300
+    + k=10
+##### plot
++ a number of images are selected to compare with reconstructed ones
+ 
 ***
 # img_auto_encoder 1D
 ***
