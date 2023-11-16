@@ -32,16 +32,17 @@ repository includes 3 auto-encoder projects:
 + model parameters n, m, and k can be modified to observe changes
 + adadelta optimizer with learning_rate=1, and rho=.8 is used to train model
 ##### plot
-+ a number of images are selected to compare with reconstructed ones
++ a number of images are selected to be compared with reconstructed ones
 ### divide image model
 + images are divided into smaller images of size 28/d⨉28/d (d=2)
 + The model then auto-encodes smaller images
-+ the model structure is same as before
++ the smaller images are then put back together to make full images of size 28⨉28
++ The model structure is same as before
 + model parameters are set as bellow
     + n=m=300
     + k=10
 ##### plot
-+ a number of images are selected to compare with reconstructed ones
++ a number of images are selected to be compared with reconstructed ones
  
 ***
 # img_auto_encoder 1D
