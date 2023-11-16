@@ -12,7 +12,7 @@
 # mnist auto-encoder
 #### pre-requisites
 + Install tensorflow
-+ Download [mnist dataset](https://github.com/FarzamD/image-autoencoder/blob/main/mnist%20data.zip)
++ Download and extract [mnist dataset](https://github.com/FarzamD/image-autoencoder/blob/main/mnist%20data.zip)
     + An alternative way to download and load mnist dataset is using code bellow
       ```python
       from keras.datasets import mnist
@@ -23,6 +23,7 @@
     + Dataset consists of images and labels of handwritten digits  
         + Images are 28⨉28 pixels
         + Trainset has 60,000 samples and testset 10,000 samples
++ Images are turned to float32
 + Images are flattened because the model is 1D
 ### simple model
 + A single-layer encoder with n=300 neurons is designed
@@ -49,7 +50,43 @@
 ![mnist auto-encoder plot](https://github.com/FarzamD/image-autoencoder/blob/main/readme-files/mnist-ae.PNG "auto-encoder plot")
 
 + The huge difference between original and reconstructed images is due to sharp edges and high-frequency components of the original images
+
 ***
+
 # img_auto_encoder 1D
+
+#### pre-requisites
++ Install tensorflow
++ Download [dataset](https://github.com/FarzamD/image-autoencoder/blob/main/mnist%20data.zip)
+
+## code blocks
+### load dataset
++ Load dataset
+    + Dataset consists of commonly used images  
+        + Images are 256⨉256 pixels
+        + Trainset has 91 samples and testset 5 samples
++ Images are turned to float32
++ Images are flattened because the model is 1D
+### divide image model
++ images are divided into smaller images of size 16⨉16 (image size divided by d=16)
++ A single-layer encoder with n=64 neurons is designed
++ 16⨉16 images are compressed(encoded) to k*8 bytes(k=16 and encoder output is float64(8 bytes) ) 
++ A single-layer decoder with m=64 neurons is designed
++ 16⨉16 images are reconstructed(decoded) from k*8 bytes
+    + because the small images are of type float32(4 bytes) they have a total size of 1024 bytes
++ The smaller images are then put back together to make full images of size 256⨉256
++ Model parameters n, m, and k can be modified to observe changes
++ adadelta optimizer with learning_rate=1, and rho=.8 is used to train model
+##### plot
++ A number of images are selected to be compared with reconstructed ones
++ Below is the resulting plot 
+  
+![1d auto-encoder plot](https://github.com/FarzamD/image-autoencoder/blob/main/readme-files/1d-ae.PNG "1d auto-encoder plot")
+
++ The reconstructed images are better compared to mnist auto-encoder. this is due to
+    +  less sharp edges and high-frequency components compared to mnist auto-encoder
+    +  more compression bytes  compared to mnist auto-encoder
+
+
 ***
 # img_auto_encoder 2D
