@@ -3,7 +3,7 @@ import pickle
 mnist= pickle.load(open('mnist.pickle','rb'))
 
 [x_train_orig, y_train, x_test_orig, y_test]= mnist
-x_train_orig = x_train_orig.astype("float32") / 255.0
+x_train_orig = x_train_orig.astype("float32") / 255.0           
 x_test_orig = x_test_orig.astype("float32") / 255.0
 
 shape=28*28#784
@@ -50,7 +50,7 @@ ae = Model(ae_input, ae_decoder_output, name="AE")
 op= tf.keras.optimizers.Adadelta(learning_rate=1, rho= .8)
 ae.compile(loss="mse", optimizer=op)
 
-ae.fit(x_train, x_train, epochs=50, batch_size=256, shuffle=True, validation_data=(x_test, x_test))
+ae.fit(x_train, x_train, epochs=50, batch_size=256, validation_data=(x_test, x_test))
 # %%% pred
 # encoded_images = encoder.predict(x_train)
 encoded_images = encoder.predict(x_test)
@@ -68,18 +68,15 @@ encoded_images = encoder.predict(x_train)
 decoded_images = decoder.predict(encoded_images)
 decoded_images_orig = np.reshape(decoded_images, newshape=(decoded_images.shape[0], 28, 28))
 
-num_images_to_show = 5
-for im_ind in range(num_images_to_show):
-    plot_ind = im_ind*2 + 1
+N = 5 #number of images to compare
+for i in range(N):
+    plot_ind = i*2 + 1
     rand_ind = np.random.randint(low=0, high=x_train.shape[0])
-    plt.subplot(num_images_to_show, 2, plot_ind)
+    plt.subplot(N, 2, plot_ind)
     plt.imshow(x_train_orig[rand_ind, :, :], cmap="gray")
-    plt.subplot(num_images_to_show, 2, plot_ind+1)
+    plt.subplot(N, 2, plot_ind+1)
     plt.imshow(decoded_images_orig[rand_ind, :, :], cmap="gray")
 
-plt.figure()
-plt.scatter(encoded_images[:, 0], encoded_images[:, 1], c=y_train)
-plt.colorbar()
 # %% divide image model
 d=2
 shape_d= shape//(d**2)
@@ -133,28 +130,34 @@ mnist= pickle.load(open('mnist.pickle','rb'))
 
 [x_train_orig, y_train, x_test_orig, y_test]= mnist
 
-encoded_images = encoder.predict(x_train)
-decoded_images = decoder.predict(encoded_images)
+decoded_images = ae.predict(x_train)
 decoded_images_orig = decoded_images.reshape( (-1, 28, 28))
 
-num_images_to_show = 5
-for im_ind in range(num_images_to_show):
-    plot_ind = im_ind*2 + 1
+N = 5 #number of images to compare
+plt.subplot(N, 2, 1)
+plt.title('original images')
+plt.subplot(N, 2, 2)
+plt.title('reconstructed images')
+for i in range(N):
+    plot_ind = i*2 + 1
     rand_ind = np.random.randint(low=0, high=shape_d)
-    plt.subplot(num_images_to_show, 2, plot_ind)
-    plt.imshow(x_train_orig[rand_ind, :, :], cmap="gray")
-    plt.subplot(num_images_to_show, 2, plot_ind+1)
-    plt.imshow(decoded_images_orig[rand_ind, :, :], cmap="gray")
-encoded_images = encoder.predict(x_test)
-decoded_images = decoder.predict(encoded_images)
+    plt.subplot(N, 2, plot_ind)
+    plt.imshow(x_train_orig[rand_ind], cmap="gray")
+    plt.subplot(N, 2, plot_ind+1)
+    plt.imshow(decoded_images_orig[rand_ind], cmap="gray")
+
+decoded_images = ae.predict(x_test)
 decoded_images_orig = decoded_images.reshape( (-1, 28, 28))
 
 plt.figure()
-num_images_to_show = 5
-for im_ind in range(num_images_to_show):
-    plot_ind = im_ind*2 + 1
+plt.subplot(N, 2, 1)
+plt.title('original images')
+plt.subplot(N, 2, 2)
+plt.title('reconstructed images')
+for i in range(N):
+    plot_ind = i*2 + 1
     rand_ind = np.random.randint(low=0, high=shape_d)
-    plt.subplot(num_images_to_show, 2, plot_ind)
-    plt.imshow(x_test_orig[rand_ind, :, :], cmap="gray")
-    plt.subplot(num_images_to_show, 2, plot_ind+1)
-    plt.imshow(decoded_images_orig[rand_ind, :, :], cmap="gray")
+    plt.subplot(N, 2, plot_ind)
+    plt.imshow(x_test_orig[rand_ind], cmap="gray")
+    plt.subplot(N, 2, plot_ind+1)
+    plt.imshow(decoded_images_orig[rand_ind], cmap="gray")
