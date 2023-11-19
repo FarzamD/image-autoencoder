@@ -57,8 +57,10 @@
 
 #### pre-requisites
 + Install tensorflow
-+ Download [dataset](https://github.com/FarzamD/image-autoencoder/blob/main/mnist%20data.zip)
-
++ Download dataset folders
+    + [TrainSet](/TrainSet) folder 
+    + [TestSet](/TestSet) folder 
+  
 ## code blocks
 ### load dataset
 + Load dataset
@@ -89,4 +91,50 @@
 
 
 ***
+
+
 # img_auto_encoder 2D
+
+#### pre-requisites
++ Install tensorflow
++ Download dataset folders
+    + [TrainSet](/TrainSet) folder 
+    + [TestSet](/TestSet) folder 
+  
+## code blocks
+### load dataset
++ Load dataset
+    + Dataset consists of commonly used images  
+        + Images are 256⨉256 pixels
+        + Trainset has 91 samples and testset 5 samples
++ Images are turned to float32
+
+### divide image
++ images are divided into smaller images of size 8⨉8 (image size divided by d=32)
+
+### models
+
+#### simple model
++ A single-layer encoder with n=64 Conv2D units is designed with a kernel size of k=3
++ A Conv2D layer is used to convert n units into 1 image
++ 8⨉8 images are compressed(encoded) to 6⨉6 images
+    + because encoded image is float32(4 bytes) it has a size of 144 bytes 
++ A single-layer decoder with m=64 Conv2D units is designed with a kernel size of k=3
++ 8⨉8 images are reconstructed(decoded) from 6⨉6 images
+    + because the small 8⨉8 images are of type float32(4 bytes) they have a total size of 256 bytes
++ The smaller images are then put back together to make full images of size 256⨉256
++ Model parameters n, m, and k can be modified to observe changes
++ adadelta optimizer with learning_rate=1, and rho=.8 is used to train model
+
+##### plot
++ A number of images are selected to be compared with reconstructed ones
++ Below is the resulting plot 
+  
+![1d auto-encoder plot](https://github.com/FarzamD/image-autoencoder/blob/main/readme-files/1d-ae.PNG "1d auto-encoder plot")
+
++ Theere are vertical lines in reconstructed images. this is because:
+    +  After transposing encoded image 
+
+
+
+
